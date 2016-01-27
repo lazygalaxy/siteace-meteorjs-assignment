@@ -9,10 +9,32 @@ Accounts.ui.config({
 // template helpers
 /////
 
-// helper function that returns all available websites
 Template.website_list.helpers({
     websites: function () {
         return Websites.find({});
+    }
+});
+
+Template.website_item.helpers({
+    getUser: function (user_id) {
+        var user = Meteor.users.findOne({
+            _id: user_id
+        });
+        if (user) {
+            return user.username;
+        } else {
+            return "unknown";
+        }
+    },
+    getVotesCounter: function (website_id) {
+        var website = Websites.findOne({
+            _id: website_id
+        });
+        if (website) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 });
 
