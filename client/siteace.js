@@ -18,7 +18,7 @@ Router.route('/website/:_id', function () {
     this.render('navbar', {
         to: "navbar"
     });
-    this.render('website', {
+    this.render('website_comments', {
         to: "main",
         data: function () {
             return Websites.findOne({
@@ -38,8 +38,28 @@ Accounts.ui.config({
 /////
 // template helpers
 /////
+Template.registerHelper('getUser', function (user_id) {
+    var user = Meteor.users.findOne({
+        _id: user_id
+    });
+    if (user) {
+        return user.username;
+    } else {
+        return "unknown";
+    }
+});
 
-Template.website_list.helpers({
+Template.registerHelper('getVotesCounter', function (website_id) {
+    var website = Websites.findOne({
+        _id: website_id
+    });
+    if (website) {
+        return website.votes;
+    }
+    return "unknown"
+});
+
+Template.websites.helpers({
     websites: function () {
         return Websites.find({}, {
             sort: {
@@ -50,34 +70,20 @@ Template.website_list.helpers({
     }
 });
 
-Template.website_item.helpers({
-    getUser: function (user_id) {
-        var user = Meteor.users.findOne({
-            _id: user_id
+Template.website_comments.helpers({
+    comments: function () {
+        return Comments.find({}, {
+            sort: {
+                createdOn: -1,
+            }
         });
-        if (user) {
-            return user.username;
-        } else {
-            return "unknown";
-        }
-    },
-    getVotesCounter: function (website_id) {
-        var website = Websites.findOne({
-            _id: website_id
-        });
-        if (website) {
-            return website.votes;
-        }
-        return "unknown"
     }
 });
-
 
 /////
 // template events
 /////
-
-Template.website_item.events({
+Template.website.events({
     "click .js-upvote": function (event) {
         var website_id = this._id;
 
@@ -127,6 +133,23 @@ Template.website_form.events({
                 createdOn: new Date(),
                 createdBy: Meteor.user()._id,
                 votes: 0
+            });
+        }
+
+        return false; // stop the form submit from reloading the page
+
+    }
+});
+
+Template.comment_form.events({
+    "submit .js-save-comment-form": function (event) {
+        var comment = event.target.comment.value;
+
+        if (Meteor.user()) {
+            Comments.insert({
+                comment: comment,
+                createdOn: new Date(),
+                createdBy: Meteor.user()._id
             });
         }
 
