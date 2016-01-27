@@ -15,7 +15,7 @@
     </nav>
 
     <div class="container">
-        {{#if currentUser}} {{> website_form}} {{/if}}{{> website_list}}
+        {{#if currentUser}} {{> website_form}} {{/if}} {{> website_list}}
     </div>
 </body>
 
@@ -59,12 +59,14 @@
             {{description}}
         </p>
         <p>Posted by: {{getUser createdBy}}</p>
+        {{#if currentUser}}
         <a href="#" class="btn btn-default js-upvote">
             <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
         </a>
         <a href="#" class="btn btn-default js-downvote">
             <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
         </a>
-        <p>Total votes: {{getVotesCounter createdBy}}</p>
+        {{/if}}
+        <p>Total votes: {{getVotesCounter _id}}</p>
     </li>
 </template>

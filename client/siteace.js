@@ -11,7 +11,11 @@ Accounts.ui.config({
 
 Template.website_list.helpers({
     websites: function () {
-        return Websites.find({});
+        return Websites.find({}, {
+            sort: {
+                votes: -1
+            }
+        });
     }
 });
 
@@ -31,10 +35,9 @@ Template.website_item.helpers({
             _id: website_id
         });
         if (website) {
-            return 1;
-        } else {
-            return 0;
+            return website.votes;
         }
+        return "unknown"
     }
 });
 
@@ -45,22 +48,32 @@ Template.website_item.helpers({
 
 Template.website_item.events({
     "click .js-upvote": function (event) {
-        // example of how you can access the id for the website in the database
-        // (this is the data context for the template)
         var website_id = this._id;
-        console.log("Up voting website with id " + website_id);
-        // put the code in here to add a vote to a website!
+
+        if (Meteor.user()) {
+            Websites.update({
+                _id: website_id
+            }, {
+                $set: {
+                    votes: this.votes + 1
+                }
+            });
+        }
 
         return false; // prevent the button from reloading the page
     },
     "click .js-downvote": function (event) {
-
-        // example of how you can access the id for the website in the database
-        // (this is the data context for the template)
         var website_id = this._id;
-        console.log("Down voting website with id " + website_id);
 
-        // put the code in here to remove a vote from a website!
+        if (Meteor.user()) {
+            Websites.update({
+                _id: website_id
+            }, {
+                $set: {
+                    votes: this.votes - 1
+                }
+            });
+        }
 
         return false; // prevent the button from reloading the page
     }
@@ -81,7 +94,8 @@ Template.website_form.events({
                 url: url,
                 description: description,
                 createdOn: new Date(),
-                createdBy: Meteor.user()._id
+                createdBy: Meteor.user()._id,
+                votes: 0
             });
         }
 
