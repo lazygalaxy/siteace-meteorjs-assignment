@@ -58,7 +58,7 @@
         <p>
             {{description}}
         </p>
-        <p>Posted by: {{getUser createdBy}}</p>
+        <p>Created by: {{getUser createdBy}} @ {{createdOn}}</p>
         {{#if currentUser}}
         <a href="#" class="btn btn-default js-upvote">
             <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
