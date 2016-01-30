@@ -1,34 +1,4 @@
 /////
-// routing
-/////
-Router.configure({
-    layoutTemplate: 'ApplicationLayout'
-});
-
-Router.route('/', function () {
-    this.render('navbar', {
-        to: "navbar"
-    });
-    this.render('websites', {
-        to: "main"
-    });
-});
-
-Router.route('/website/:_id', function () {
-    this.render('navbar', {
-        to: "navbar"
-    });
-    this.render('website_comments', {
-        to: "main",
-        data: function () {
-            return Websites.findOne({
-                _id: this.params._id
-            })
-        }
-    });
-});
-
-/////
 // account configs
 /////
 Accounts.ui.config({
@@ -53,10 +23,24 @@ Template.registerHelper('getVotesCounter', function (website_id) {
     var website = Websites.findOne({
         _id: website_id
     });
+
     if (website) {
-        return website.votes;
+        var votes = website.upVotes.length - website.downVotes.length;
+        return votes;
     }
-    return "unknown"
+    return "unknown";
+});
+
+Template.registerHelper('getVotesCounterStatus', function (website_id) {
+    var website = Websites.findOne({
+        _id: website_id
+    });
+
+    if (website && Meteor.user()) {
+        var user_id = Meteor.user()._id;
+        return website.upVotes.includes(user_id) - website.downVotes.includes(user_id);
+    }
+    return "unknown";
 });
 
 Template.websites.helpers({
@@ -119,11 +103,16 @@ Template.website.events({
         var website_id = this._id;
 
         if (Meteor.user()) {
+            var user_id = Meteor.user()._id;
+
             Websites.update({
                 _id: website_id
             }, {
-                $set: {
-                    votes: this.votes + 1
+                $addToSet: {
+                    upVotes: user_id
+                },
+                $pull: {
+                    downVotes: user_id
                 }
             });
         }
@@ -134,11 +123,16 @@ Template.website.events({
         var website_id = this._id;
 
         if (Meteor.user()) {
+            var user_id = Meteor.user()._id;
+
             Websites.update({
                 _id: website_id
             }, {
-                $set: {
-                    votes: this.votes - 1
+                $addToSet: {
+                    downVotes: user_id
+                },
+                $pull: {
+                    upVotes: user_id
                 }
             });
         }
@@ -163,7 +157,8 @@ Template.website_form.events({
                 description: description,
                 createdOn: new Date(),
                 createdBy: Meteor.user()._id,
-                votes: 0
+                upVotes: [],
+                downVotes: []
             });
         }
 
