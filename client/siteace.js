@@ -62,15 +62,21 @@ Template.registerHelper('getVotesCounter', function (website_id) {
 Template.websites.helpers({
     websites: function () {
         //if we have search criterias then we use a regex to find the websites
-        var searchCriteria = Session.get("search_criteria");
+        var searchTerm = Session.get("search-term");
 
-        console.log(searchCriteria);
-
-        if (searchCriteria) {
+        if (searchTerm) {
             return Websites.find({
-                title: {
-                    $regex: ".*" + searchCriteria + ".*"
-                }
+                $or: [{
+                    "title": {
+                        $regex: ".*" + searchTerm + ".*",
+                        $options: 'i'
+                    }
+                }, {
+                    "description": {
+                        $regex: ".*" + searchTerm + ".*",
+                        $options: 'i'
+                    }
+                }]
             }, {
                 sort: {
                     votes: -1,
@@ -102,8 +108,8 @@ Template.website_comments.helpers({
 // template events
 /////
 Template.navbar.events({
-    'keyup #srch-term': function (event) {
-        Session.set("search_criteria", event.target.value)
+    'keyup #search-term': function (event) {
+        Session.set("search-term", event.target.value)
         return false; // stop the form submit from reloading the page
     }
 });
