@@ -19,22 +19,6 @@ Template.website.events({
         if (Meteor.user()) {
             var user_id = Meteor.user()._id;
 
-            console.log(this.upVotes);
-            var index = this.upVotes.indexOf(user_id);
-            if (user_id == -1) {
-                this.upVotes.push(user_id);
-            }
-            console.log(this.upVotes);
-
-            console.log(this.downVotes);
-            var index = this.downVotes.indexOf(user_id);
-            if (index > -1) {
-                this.downVotes.splice(index, 1);
-            }
-            console.log(this.downVotes);
-
-            var newVotes = this.upVotes.length - this.downVotes.length;
-
             Websites.update({
                 _id: website_id
             }, {
@@ -43,9 +27,6 @@ Template.website.events({
                 },
                 $pull: {
                     downVotes: user_id
-                },
-                $set: {
-                    votes: newVotes
                 }
             });
         } else {
@@ -57,19 +38,8 @@ Template.website.events({
     "click .js-downvote": function (event) {
         var website_id = this._id;
 
-        var newVotes = this.upVotes.length - this.downVotes.length;
-
         if (Meteor.user()) {
             var user_id = Meteor.user()._id;
-
-            var index = this.upVotes.indexOf(user_id);
-            if (user_id == -1) {
-                this.downVotes.push(user_id);
-            }
-            var index = this.downVotes.indexOf(user_id);
-            if (index > -1) {
-                this.upVotes.splice(index, 1);
-            }
 
             Websites.update({
                 _id: website_id
@@ -79,9 +49,6 @@ Template.website.events({
                 },
                 $pull: {
                     upVotes: user_id
-                },
-                $set: {
-                    votes: newVotes
                 }
             });
         } else {
@@ -109,7 +76,8 @@ Template.website_add_form.events({
                 createdOn: new Date(),
                 createdBy: Meteor.user()._id,
                 upVotes: [],
-                downVotes: []
+                downVotes: [],
+                votes: 0
             });
         }
         $("#website_add_form").modal('hide');

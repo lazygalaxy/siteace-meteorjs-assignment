@@ -47,6 +47,29 @@ Template.websites.helpers({
     }
 });
 
+Template.website.helpers({
+    getVotesCounter: function (website_id) {
+        var website = Websites.findOne({
+            _id: website_id
+        });
+
+        if (website) {
+            var newVotes = website.upVotes.length - website.downVotes.length;
+
+            Websites.update({
+                _id: website_id
+            }, {
+                $set: {
+                    votes: newVotes
+                }
+            });
+
+            return newVotes;
+        }
+        return "unknown";
+    }
+});
+
 Template.website_comments.helpers({
     comments: function () {
         return Comments.find({}, {
