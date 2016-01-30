@@ -92,15 +92,18 @@ Template.website_add_form.events({
 });
 
 
-Template.comment_form.events({
+Template.comment_add_form.events({
     "submit .js-save-comment-form": function (event) {
         var comment = event.target.comment.value;
 
         if (Meteor.user()) {
+            var website_id = this._id;
+
             Comments.insert({
                 comment: comment,
                 createdOn: new Date(),
-                createdBy: Meteor.user()._id
+                createdBy: Meteor.user()._id,
+                website_id: website_id
             });
         }
 

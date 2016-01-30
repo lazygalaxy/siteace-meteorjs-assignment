@@ -33,6 +33,11 @@ body {
     margin-bottom: 5px;
 }
 
+.subcard {
+    margin-bottom: 5px;
+    background: white;
+}
+
 .card .title {
     font-size: 1.5em;
 }

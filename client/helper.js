@@ -1,6 +1,3 @@
-/////
-// template helpers
-/////
 Template.registerHelper('getUser', function (user_id) {
     var user = Meteor.users.findOne({
         _id: user_id
@@ -67,12 +64,11 @@ Template.website.helpers({
             return newVotes;
         }
         return "unknown";
-    }
-});
-
-Template.website_comments.helpers({
-    comments: function () {
-        return Comments.find({}, {
+    },
+    comments: function (website_id) {
+        return Comments.find({
+            website_id: website_id
+        }, {
             sort: {
                 createdOn: -1,
             }

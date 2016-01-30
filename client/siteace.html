@@ -109,34 +109,38 @@
                 </p>
 
                 {{#if withComments}}
-                <p>Total comments: 0</p>
-                <a href="/" class="btn btn-info">Go Back</a> {{>comment_form}}
+                <a href="/" class="btn btn-info">
+                    <span class="glyphicon glyphicon-backward" aria-hidden="true"></span>Go Back
+                </a>
+                {{>comment_add_form}}
                 <div>
-                    {{#each comments}} {{>comment}} {{/each}}
+                    {{#each comments _id}} {{>comment}} {{/each}}
                 </div>
                 {{else}}
-                <p><a href="/website/{{_id}}">Total comments: 0</a></p>
+                <a href="/website/{{_id}}" class="btn btn-default btn-primary">
+                    <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>View Comments
+                </a>
                 {{/if}}
             </div>
         </div>
     </div>
 </template>
 
-<template name="comment_form">
+<template name="comment_add_form">
     {{#if currentUser}}
     <form class="js-save-comment-form">
         <div class="form-group">
             <label for="comment">Comment</label>
             <input type="text" class="form-control" id="comment" placeholder="Write a comment...">
         </div>
-        <button type="submit" class="btn btn-default">Submit</button>
+        <button type="submit" class="btn btn-success">Submit</button>
     </form>
     {{/if}}
 </template>
 
 <template name="comment">
-    <li>
+    <div class="subcard">
         <p>{{comment}}</p>
-        <p>Posted by: {{getUser createdBy}} @ {{createdOn}}</p>
-    </li>
+        <p>Posted by: {{getUser createdBy}} @ {{moFormat createdOn 'YYYY-MM-DD hh:mm:ss'}}</p>
+    </div>
 </template>
