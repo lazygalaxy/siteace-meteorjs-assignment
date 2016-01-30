@@ -96,7 +96,7 @@ Template.comment_add_form.events({
     "submit .js-save-comment-form": function (event) {
         var comment = event.target.comment.value;
 
-        if (Meteor.user()) {
+        if (Meteor.user() && comment) {
             var website_id = this._id;
 
             Comments.insert({
@@ -105,6 +105,8 @@ Template.comment_add_form.events({
                 createdBy: Meteor.user()._id,
                 website_id: website_id
             });
+            event.target.comment.value = '';
+            FlashMessages.sendSuccess("Thank you for your comment!");
         }
 
         return false; // stop the form submit from reloading the page

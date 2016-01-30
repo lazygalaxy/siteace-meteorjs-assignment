@@ -90,7 +90,7 @@
                 </a>
             </div>
             <div class="row center-block">
-                {{getVotesCounter _id}}
+                {{votesCounter _id}}
             </div>
             <div class="row">
                 <a href="#" class="btn btn-default btn-danger js-downvote">
@@ -98,7 +98,7 @@
                 </a>
             </div>
         </div>
-        <div class="col-xs-11">
+        <div class="col-xs-10">
             <div class="row">
                 <div class="title"><a href="{{url}}">{{title}}</a></div>
                 <p>Added by: {{getUser createdBy}}
@@ -113,12 +113,15 @@
                     <span class="glyphicon glyphicon-backward" aria-hidden="true"></span>Go Back
                 </a>
                 {{>comment_add_form}}
+                <p>
+                    Total comments: {{commentsCounter _id}}
+                </p>
                 <div>
                     {{#each comments _id}} {{>comment}} {{/each}}
                 </div>
                 {{else}}
                 <a href="/website/{{_id}}" class="btn btn-default btn-primary">
-                    <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>View Comments
+                    <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>View Comments ({{commentsCounter _id}})
                 </a>
                 {{/if}}
             </div>

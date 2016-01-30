@@ -45,7 +45,7 @@ Template.websites.helpers({
 });
 
 Template.website.helpers({
-    getVotesCounter: function (website_id) {
+    votesCounter: function (website_id) {
         var website = Websites.findOne({
             _id: website_id
         });
@@ -73,5 +73,14 @@ Template.website.helpers({
                 createdOn: -1,
             }
         });
+    },
+    commentsCounter: function (website_id) {
+        return Comments.find({
+            website_id: website_id
+        }, {
+            sort: {
+                createdOn: -1,
+            }
+        }).count();
     }
 });
