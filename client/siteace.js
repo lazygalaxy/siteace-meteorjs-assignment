@@ -1,11 +1,4 @@
 /////
-// account configs
-/////
-Accounts.ui.config({
-    passwordSignupFields: "USERNAME_AND_EMAIL"
-});
-
-/////
 // template helpers
 /////
 Template.registerHelper('getUser', function (user_id) {
@@ -115,6 +108,8 @@ Template.website.events({
                     downVotes: user_id
                 }
             });
+        } else {
+            FlashMessages.sendInfo("You need to sign in if you would like to up vote websites.");
         }
 
         return false; // prevent the button from reloading the page
@@ -135,6 +130,8 @@ Template.website.events({
                     upVotes: user_id
                 }
             });
+        } else {
+            FlashMessages.sendInfo("You need to sign in if you would like to down vote websites.");
         }
 
         return false; // prevent the button from reloading the page
