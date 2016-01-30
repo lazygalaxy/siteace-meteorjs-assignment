@@ -15,12 +15,14 @@ Router.route('/website/:_id', function () {
     this.render('navbar', {
         to: "navbar"
     });
-    this.render('website_comments', {
+    this.render('website', {
         to: "main",
         data: function () {
-            return Websites.findOne({
+            var website = Websites.findOne({
                 _id: this.params._id
-            })
+            });
+            website.withComments = true;
+            return website;
         }
     });
 });

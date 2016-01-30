@@ -87,37 +87,19 @@
                 </p>
                 <p>Created by: {{getUser createdBy}} @ {{createdOn}}</p>
 
+
+                {{#if withComments}}
+                <p>Total comments: 0</p>
+                <a href="/" class="btn btn-info">Go Back</a> {{>comment_form}}
+                <div>
+                    {{#each comments}} {{>comment}} {{/each}}
+                </div>
+                {{else}}
                 <p><a href="/website/{{_id}}">Total comments: 0</a></p>
+                {{/if}}
             </div>
         </div>
     </div>
-</template>
-
-
-<template name="website_comments">
-    <li>
-        <header>
-            <h1><a href="{{url}}">{{title}}</a></h1>
-            <p>
-                {{description}}
-            </p>
-            <p>Created by: {{getUser createdBy}} @ {{createdOn}}</p>
-            {{#if currentUser}}
-            <a href="#" class="btn btn-default js-upvote">
-                <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
-            </a>
-            <a href="#" class="btn btn-default js-downvote">
-                <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
-            </a>
-            {{/if}}
-            <p>Total votes: {{getVotesCounter _id}}</p>
-            <p>Total comments: 0</p>
-            <a href="/">Go Back</a> {{>comment_form}}
-        </header>
-        <ul>
-            {{#each comments}} {{>comment}} {{/each}}
-        </ul>
-    </li>
 </template>
 
 <template name="comment_form">
