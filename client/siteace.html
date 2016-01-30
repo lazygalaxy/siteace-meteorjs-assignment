@@ -67,26 +67,38 @@
 
 <!-- template that displays individual website entries -->
 <template name="website">
-    <li>
-        <header>
-            <h1><a href="{{url}}">{{title}}</a></h1>
-            <p>
-                {{description}}
-            </p>
-            <p>Created by: {{getUser createdBy}} @ {{createdOn}}</p>
+    <table>
+        <tr>
+            <td class="ui-helper-center">
+                <tr>
+                    <a href="#" class="btn btn-default btn-success js-upvote">
+                        <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+                    </a>
+                </tr>
+                <tr>
+                    {{getVotesCounter _id}}
+                </tr>
+                <tr>
+                    <a href="#" class="btn btn-default btn-danger js-downvote">
+                        <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+                    </a>
+                </tr>
+            </td>
+            <td>
+                <li>
+                    <header>
+                        <h1><a href="{{url}}">{{title}}</a></h1>
+                        <p>
+                            {{description}}
+                        </p>
+                        <p>Created by: {{getUser createdBy}} @ {{createdOn}}</p>
 
-            {{#if currentUser}}
-            <a href="#" class="btn btn-default js-upvote">
-                <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
-            </a>
-            <a href="#" class="btn btn-default js-downvote">
-                <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
-            </a>
-            {{/if}}
-            <p>Total votes: {{getVotesCounter _id}}</p>
-            <p><a href="/website/{{_id}}">Total comments: 0</a></p>
-        </header>
-    </li>
+                        <p><a href="/website/{{_id}}">Total comments: 0</a></p>
+                    </header>
+                </li>
+            </td>
+        </tr>
+    </table>
 </template>
 
 <template name="website_comments">
