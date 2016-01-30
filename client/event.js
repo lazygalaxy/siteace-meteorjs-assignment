@@ -15,20 +15,21 @@ Template.navbar.events({
 Template.website.events({
     "click .js-upvote": function (event) {
         var website_id = this._id;
-
         if (Meteor.user()) {
             var user_id = Meteor.user()._id;
-
-            Websites.update({
-                _id: website_id
-            }, {
-                $addToSet: {
-                    upVotes: user_id
-                },
-                $pull: {
-                    downVotes: user_id
-                }
-            });
+            if (this.upVotes.indexOf(user_id) == -1) {
+                Websites.update({
+                    _id: website_id
+                }, {
+                    $addToSet: {
+                        upVotes: user_id
+                    },
+                    $pull: {
+                        downVotes: user_id
+                    }
+                });
+                FlashMessages.sendSuccess("Thank you for your vote!");
+            }
         } else {
             FlashMessages.sendInfo("You need to sign in if you would like to up vote websites.");
         }
@@ -40,17 +41,21 @@ Template.website.events({
 
         if (Meteor.user()) {
             var user_id = Meteor.user()._id;
+            if (this.downVotes.indexOf(user_id) == -1) {
+                var user_id = Meteor.user()._id;
 
-            Websites.update({
-                _id: website_id
-            }, {
-                $addToSet: {
-                    downVotes: user_id
-                },
-                $pull: {
-                    upVotes: user_id
-                }
-            });
+                Websites.update({
+                    _id: website_id
+                }, {
+                    $addToSet: {
+                        downVotes: user_id
+                    },
+                    $pull: {
+                        upVotes: user_id
+                    }
+                });
+                FlashMessages.sendSuccess("Thank you for your vote!");
+            }
         } else {
             FlashMessages.sendInfo("You need to sign in if you would like to down vote websites.");
         }
@@ -81,6 +86,7 @@ Template.website_add_form.events({
             });
         }
         $("#website_add_form").modal('hide');
+        FlashMessages.sendSuccess("Website added: " + title);
         return false; // stop the form submit from reloading the page
     }
 });
