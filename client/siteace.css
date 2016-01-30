@@ -1,5 +1,20 @@
 /* CSS declarations go here */
 
+.navbar-default {
+    background-color: #e1e5f0;
+    border-color: #e1e5f0;
+}
+
+.navbar-default .navbar-brand {
+    color: #315481;
+}
+
+.navbar-container {
+    max-width: 800px;
+    margin: 0 auto;
+    min-height: 100%;
+}
+
 body {
     font-family: sans-serif;
     background-color: #315481;
@@ -53,10 +68,4 @@ li {
     position: relative;
     list-style: none;
     padding: 5px 0px 5px 0px;
-}
-
-@media (max-width: 600px) {
-    body {
-        font-size: 10px;
-    }
 }

@@ -11,11 +11,24 @@
 
 <template name="navbar">
     <nav class="navbar navbar-default">
-        <div class="container-fluid">
+        <div class="navbar-container">
             <div class="navbar-header">
-                <a class="navbar-brand" href="/">
-	        Site Ace
-	      </a> {{> loginButtons}}
+                <a class="navbar-brand" href="/">SiteAce</a>
+            </div>
+
+            <div class="navbar-left">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="srch-term" id="srch-term">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="navbar-right">
+                {{> loginButtons }}
             </div>
         </div>
     </nav>

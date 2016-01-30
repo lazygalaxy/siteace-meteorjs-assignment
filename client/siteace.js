@@ -61,6 +61,24 @@ Template.registerHelper('getVotesCounter', function (website_id) {
 
 Template.websites.helpers({
     websites: function () {
+        //if we have search criterias then we use a regex to find the websites
+        var searchCriteria = Session.get("search_criteria");
+
+        console.log(searchCriteria);
+
+        if (searchCriteria) {
+            return Websites.find({
+                title: {
+                    $regex: ".*" + searchCriteria + ".*"
+                }
+            }, {
+                sort: {
+                    votes: -1,
+                    createdOn: -1,
+                }
+            });
+        }
+        // return all the webistes if there were no search criterias
         return Websites.find({}, {
             sort: {
                 votes: -1,
@@ -83,6 +101,13 @@ Template.website_comments.helpers({
 /////
 // template events
 /////
+Template.navbar.events({
+    'keyup #srch-term': function (event) {
+        Session.set("search_criteria", event.target.value)
+        return false; // stop the form submit from reloading the page
+    }
+});
+
 Template.website.events({
     "click .js-upvote": function (event) {
         var website_id = this._id;
