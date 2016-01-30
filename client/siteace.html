@@ -3,31 +3,31 @@
 </head>
 
 <body>
-    {{> flashMessages}}
 </body>
 
 <template name="ApplicationLayout">
-    {{> yield "navbar"}} {{> yield main}}
+    {{> yield "navbar"}}
+    <div class="container">
+        {{> flashMessages}} {{> yield main}}
+    </div>
 </template>
 
 <template name="navbar">
-    <nav class="navbar navbar-default">
-        <div class="navbar-container">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="/">SiteAce</a>
-            </div>
+    <nav class="navbar navbar-default navbar-container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">SiteAce</a>
+        </div>
 
-            <div class="navbar-left">
-                <form class="navbar-form" role="search">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search" name="search-term" id="search-term">
-                    </div>
-                </form>
-            </div>
+        <div class="navbar-left">
+            <form class="navbar-form" role="search">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search" name="search-term" id="search-term">
+                </div>
+            </form>
+        </div>
 
-            <div class="navbar-right">
-                {{> loginButtons }}
-            </div>
+        <div class="navbar-right">
+            {{> loginButtons }}
         </div>
     </nav>
 </template>
@@ -58,76 +58,66 @@
 
 <!-- template that displays several website items -->
 <template name="websites">
-    <div class="container">
-        {{#if currentUser}} {{> website_form}} {{/if}}
-        <ul>
-            {{#each websites}} {{>website}} {{/each}}
-        </ul>
-    </div>
+    {{#if currentUser}} {{> website_form}} {{/if}} {{#each websites}} {{>website}} {{/each}}
 </template>
 
 <!-- template that displays individual website entries -->
 <template name="website">
-    <table>
-        <tr>
-            <td class="ui-helper-center">
-                <tr>
-                    <a href="#" class="btn btn-default btn-success js-upvote">
-                        <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
-                    </a>
-                </tr>
-                <tr>
-                    {{getVotesCounter _id}}
-                </tr>
-                <tr>
-                    <a href="#" class="btn btn-default btn-danger js-downvote">
-                        <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
-                    </a>
-                </tr>
-            </td>
-            <td>
-                <li>
-
-                    <h1><a href="{{url}}">{{title}}</a></h1>
-                    <p>
-                        {{description}}
-                    </p>
-                    <p>Created by: {{getUser createdBy}} @ {{createdOn}}</p>
-
-                    <p><a href="/website/{{_id}}">Total comments: 0</a></p>
-
-                </li>
-            </td>
-        </tr>
-    </table>
-</template>
-
-<template name="website_comments">
-    <div class="container">
-        <li>
-            <header>
-                <h1><a href="{{url}}">{{title}}</a></h1>
+    <div class="row card">
+        <div class="col-xs-1">
+            <div class="row">
+                <a href="#" class="btn btn-default btn-success js-upvote">
+                    <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+                </a>
+            </div>
+            <div class="row center-block">
+                {{getVotesCounter _id}}
+            </div>
+            <div class="row">
+                <a href="#" class="btn btn-default btn-danger js-downvote">
+                    <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+                </a>
+            </div>
+        </div>
+        <div class="col-xs-11">
+            <div class="row">
+                <div class="title"><a href="{{url}}">{{title}}</a></div>
                 <p>
                     {{description}}
                 </p>
                 <p>Created by: {{getUser createdBy}} @ {{createdOn}}</p>
-                {{#if currentUser}}
-                <a href="#" class="btn btn-default js-upvote">
-                    <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
-                </a>
-                <a href="#" class="btn btn-default js-downvote">
-                    <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
-                </a>
-                {{/if}}
-                <p>Total votes: {{getVotesCounter _id}}</p>
-                <p>Total comments: 0</p>
-                <a href="/">Go Back</a> {{>comment_form}}
-            </header>
-            <ul>
-                {{#each comments}} {{>comment}} {{/each}}
-            </ul>
-        </li>
+
+                <p><a href="/website/{{_id}}">Total comments: 0</a></p>
+            </div>
+        </div>
     </div>
+</template>
+
+
+<template name="website_comments">
+    <li>
+        <header>
+            <h1><a href="{{url}}">{{title}}</a></h1>
+            <p>
+                {{description}}
+            </p>
+            <p>Created by: {{getUser createdBy}} @ {{createdOn}}</p>
+            {{#if currentUser}}
+            <a href="#" class="btn btn-default js-upvote">
+                <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+            </a>
+            <a href="#" class="btn btn-default js-downvote">
+                <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+            </a>
+            {{/if}}
+            <p>Total votes: {{getVotesCounter _id}}</p>
+            <p>Total comments: 0</p>
+            <a href="/">Go Back</a> {{>comment_form}}
+        </header>
+        <ul>
+            {{#each comments}} {{>comment}} {{/each}}
+        </ul>
+    </li>
 </template>
 
 <template name="comment_form">
