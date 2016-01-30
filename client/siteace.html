@@ -26,39 +26,58 @@
             </form>
         </div>
 
+        <div class="navbar-left">
+            <ul class="nav navbar-nav">
+                <li>
+                    <p class="navbar-btn">
+                        <a href="#" class="btn btn-default js-show-website-form"><span class="glyphicon glyphicon-plus"></span>Add Website</a>
+                    </p>
+                </li>
+            </ul>
+        </div>
+
         <div class="navbar-right">
             {{> loginButtons }}
         </div>
     </nav>
 </template>
 
-<template name="website_form">
-    <a class="btn btn-default js-toggle-website-form" href="#">
-        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-    </a>
-    <div id="website_form" class="hidden_div">
-        <form class="js-save-website-form">
-            <div class="form-group">
-                <label for="url">Site address</label>
-                <input type="text" class="form-control" id="url" placeholder="http://www.mysite.com">
-            </div>
-            <div class="form-group">
-                <label for="title">Title</label>
-                <input type="text" class="form-control" id="title" placeholder="Mysite">
-            </div>
-            <div class="form-group">
-                <label for="description">Description</label>
-                <input type="text" class="form-control" id="description" placeholder="I found this site really useful for ...">
-            </div>
+<template name="website_add_form">
+    <div class="modal fade" id="website_add_form">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title"></div>
+                </div>
+                <div class="modal-body">
+                    <form class="js-save-website-form">
+                        <div class="form-group">
+                            <label for="url">URL *</label>
+                            <input type="text" class="form-control" id="url" placeholder="http://www.mysite.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="title">Title *</label>
+                            <input type="text" class="form-control" id="title" placeholder="Mysite">
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Description *</label>
+                            <input type="text" class="form-control" id="description" placeholder="I found this site really useful for ...">
+                        </div>
 
-            <button type="submit" class="btn btn-default">Submit</button>
-        </form>
+                        <button type="submit" class="btn btn-default btn-success">Submit</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-warning" data-dismiss="modal">cancel</button>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
 <!-- template that displays several website items -->
 <template name="websites">
-    {{#if currentUser}} {{> website_form}} {{/if}} {{#each websites}} {{>website}} {{/each}}
+    {{#if currentUser}} {{> website_add_form}} {{/if}} {{#each websites}} {{>website}} {{/each}}
 </template>
 
 <!-- template that displays individual website entries -->
@@ -67,15 +86,15 @@
         <div class="col-xs-1">
             <div class="row">
                 <a href="#" class="btn btn-default btn-success js-upvote">
-                    <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>{{upVotes.length}}
                 </a>
             </div>
             <div class="row center-block">
-                {{getVotesCounter _id}}
+                {{votes}}
             </div>
             <div class="row">
                 <a href="#" class="btn btn-default btn-danger js-downvote">
-                    <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>{{downVotes.length}}
                 </a>
             </div>
         </div>

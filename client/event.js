@@ -1,18 +1,39 @@
 Template.navbar.events({
     'keyup #search-term': function (event) {
-        console.log('searching!!!');
         Session.set("search-term", event.target.value)
         return false; // stop the form submit from reloading the page
+    },
+    'click .js-show-website-form': function (event) {
+        if (Meteor.user()) {
+            $("#website_add_form").modal('show');
+        } else {
+            FlashMessages.sendInfo("You need to sign in if you would like to add a website.");
+        }
     }
 });
 
 Template.website.events({
     "click .js-upvote": function (event) {
         var website_id = this._id;
-        console.log(website_id);
 
         if (Meteor.user()) {
             var user_id = Meteor.user()._id;
+
+            console.log(this.upVotes);
+            var index = this.upVotes.indexOf(user_id);
+            if (user_id == -1) {
+                this.upVotes.push(user_id);
+            }
+            console.log(this.upVotes);
+
+            console.log(this.downVotes);
+            var index = this.downVotes.indexOf(user_id);
+            if (index > -1) {
+                this.downVotes.splice(index, 1);
+            }
+            console.log(this.downVotes);
+
+            var newVotes = this.upVotes.length - this.downVotes.length;
 
             Websites.update({
                 _id: website_id
@@ -22,6 +43,9 @@ Template.website.events({
                 },
                 $pull: {
                     downVotes: user_id
+                },
+                $set: {
+                    votes: newVotes
                 }
             });
         } else {
@@ -33,8 +57,19 @@ Template.website.events({
     "click .js-downvote": function (event) {
         var website_id = this._id;
 
+        var newVotes = this.upVotes.length - this.downVotes.length;
+
         if (Meteor.user()) {
             var user_id = Meteor.user()._id;
+
+            var index = this.upVotes.indexOf(user_id);
+            if (user_id == -1) {
+                this.downVotes.push(user_id);
+            }
+            var index = this.downVotes.indexOf(user_id);
+            if (index > -1) {
+                this.upVotes.splice(index, 1);
+            }
 
             Websites.update({
                 _id: website_id
@@ -44,6 +79,9 @@ Template.website.events({
                 },
                 $pull: {
                     upVotes: user_id
+                },
+                $set: {
+                    votes: newVotes
                 }
             });
         } else {
@@ -52,11 +90,11 @@ Template.website.events({
 
         return false; // prevent the button from reloading the page
     }
-})
+});
 
-Template.website_form.events({
+Template.website_add_form.events({
     "click .js-toggle-website-form": function (event) {
-        $("#website_form").toggle('slow');
+        $("#website_add_form").toggle('slow');
     },
     "submit .js-save-website-form": function (event) {
         var url = event.target.url.value;
@@ -74,11 +112,11 @@ Template.website_form.events({
                 downVotes: []
             });
         }
-
+        $("#website_add_form").modal('hide');
         return false; // stop the form submit from reloading the page
-
     }
 });
+
 
 Template.comment_form.events({
     "submit .js-save-comment-form": function (event) {

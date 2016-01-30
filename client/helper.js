@@ -47,31 +47,6 @@ Template.websites.helpers({
     }
 });
 
-Template.website.helpers({
-    getVotesCounter: function (website_id) {
-        var website = Websites.findOne({
-            _id: website_id
-        });
-
-        if (website) {
-            var votes = website.upVotes.length - website.downVotes.length;
-            return votes;
-        }
-        return "unknown";
-    },
-    getVotesCounterStatus: function (website_id) {
-        var website = Websites.findOne({
-            _id: website_id
-        });
-
-        if (website && Meteor.user()) {
-            var user_id = Meteor.user()._id;
-            return website.upVotes.includes(user_id) - website.downVotes.includes(user_id);
-        }
-        return "unknown";
-    }
-});
-
 Template.website_comments.helpers({
     comments: function () {
         return Comments.find({}, {
