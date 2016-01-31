@@ -53,13 +53,13 @@ Template.website.helpers({
         if (website) {
             var newVotes = website.upVotes.length - website.downVotes.length;
 
-            Websites.update({
-                _id: website_id
-            }, {
-                $set: {
-                    votes: newVotes
-                }
-            });
+            //Websites.update({
+            //    _id: website_id
+            //}, {
+            //    $set: {
+            //        votes: newVotes
+            //    }
+            //});
 
             return newVotes;
         }

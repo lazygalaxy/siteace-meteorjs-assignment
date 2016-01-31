@@ -111,8 +111,8 @@ Template.comment_add_form.events({
             FlashMessages.sendSuccess("Thank you for your comment!");
         }
 
-        if (comment) {
-            FlashMessages.sendFailure("You need to provide a comment.");
+        if (!comment) {
+            FlashMessages.sendWarning("You need to provide a comment.");
         }
 
         return false; // stop the form submit from reloading the page
