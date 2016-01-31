@@ -98,7 +98,7 @@ Template.website_add_form.events({
             event.target.title.value = '';
             event.target.description.value = '';
 
-            $("#website_add_form").modal('hide');
+            $("#website_add_form_modal").modal('hide');
             FlashMessages.sendSuccess("Website added: " + title);
         }
 
