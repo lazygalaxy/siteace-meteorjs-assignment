@@ -7,7 +7,7 @@ Template.navbar.events({
         if (Meteor.user()) {
             $("#website_add_form").modal('show');
         } else {
-            FlashMessages.sendInfo("You need to sign in if you would like to add a website.");
+            FlashMessages.sendWarning("You need to sign in if you would like to add a website.");
         }
     }
 });
@@ -31,7 +31,7 @@ Template.website.events({
                 FlashMessages.sendSuccess("Thank you for your vote!");
             }
         } else {
-            FlashMessages.sendInfo("You need to sign in if you would like to up vote websites.");
+            FlashMessages.sendWarning("You need to sign in if you would like to up vote websites.");
         }
 
         return false; // prevent the button from reloading the page
@@ -57,7 +57,7 @@ Template.website.events({
                 FlashMessages.sendSuccess("Thank you for your vote!");
             }
         } else {
-            FlashMessages.sendInfo("You need to sign in if you would like to down vote websites.");
+            FlashMessages.sendWarning("You need to sign in if you would like to down vote websites.");
         }
 
         return false; // prevent the button from reloading the page
@@ -109,6 +109,10 @@ Template.comment_add_form.events({
             });
             event.target.comment.value = '';
             FlashMessages.sendSuccess("Thank you for your comment!");
+        }
+
+        if (comment) {
+            FlashMessages.sendFailure("You need to provide a comment.");
         }
 
         return false; // stop the form submit from reloading the page
