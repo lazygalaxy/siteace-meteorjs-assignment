@@ -94,6 +94,9 @@ Template.website_add_form.events({
                 downVotes: [],
                 votes: 0
             });
+            event.target.url.value = '';
+            event.target.title.value = '';
+            event.target.description.value = '';
 
             $("#website_add_form").modal('hide');
             FlashMessages.sendSuccess("Website added: " + title);
@@ -118,6 +121,7 @@ Template.comment_add_form.events({
                 website_id: website_id
             });
             event.target.comment.value = '';
+
             FlashMessages.sendSuccess("Thank you for your comment!");
         }
 
