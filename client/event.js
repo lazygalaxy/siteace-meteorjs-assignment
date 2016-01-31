@@ -5,7 +5,7 @@ Template.navbar.events({
     },
     'click .js-show-website-form': function (event) {
         if (Meteor.user()) {
-            $("#website_add_form").modal('show');
+            $("#website_add_form_modal").modal('show');
         } else {
             FlashMessages.sendWarning("You need to sign in if you would like to add a website.");
         }
