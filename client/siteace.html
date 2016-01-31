@@ -8,8 +8,9 @@
 <template name="ApplicationLayout">
     {{> yield "navbar"}}
     <div class="container">
-        {{> flashMessages}} {{> yield main}}
+        {{> flashMessages}} {{> website_add_form}} {{> yield main}}
     </div>
+
 </template>
 
 <template name="navbar">
@@ -43,25 +44,25 @@
 </template>
 
 <template name="website_add_form">
-    <div class="modal fade" id="website_add_form">
+    <div id="website_add_form" class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <div class="modal-title"></div>
+                    <div class="modal-title">Add a website!</div>
                 </div>
                 <div class="modal-body">
                     <form class="js-save-website-form">
                         <div class="form-group">
                             <label for="url">URL</label>
-                            <input type="text" class="form-control" id="url" placeholder="http://www.mysite.com">
+                            <input type="text" class="form-control required" id="url" placeholder="http://www.mysite.com">
                         </div>
                         <div class="form-group">
                             <label for="title">Title</label>
-                            <input type="text" class="form-control" id="title" placeholder="Mysite">
+                            <input type="text" class="form-control required" id="title" placeholder="Mysite">
                         </div>
                         <div class="form-group">
                             <label for="description">Description</label>
-                            <input type="text" class="form-control" id="description" placeholder="I found this site really useful for ...">
+                            <input type="text" class="form-control required" id="description" placeholder="I found this site really useful for ...">
                         </div>
 
                         <button type="submit" class="btn btn-default btn-success">Submit</button>
@@ -77,7 +78,7 @@
 
 <!-- template that displays several website items -->
 <template name="websites">
-    {{#if currentUser}} {{> website_add_form}} {{/if}} {{#each websites}} {{>website}} {{/each}}
+    {{#each websites}} {{>website}} {{/each}}
 </template>
 
 <!-- template that displays individual website entries -->
@@ -131,10 +132,10 @@
 
 <template name="comment_add_form">
     {{#if currentUser}}
-    <form class="js-save-comment-form">
+    <form id="comment_add_form" class="js-save-comment-form">
         <div class="form-group">
             <label for="comment">Comment</label>
-            <input type="text" class="form-control" id="comment" placeholder="Write a comment...">
+            <input type="text" class="form-control required" id="comment" placeholder="Write a comment...">
         </div>
         <button type="submit" class="btn btn-success">Submit</button>
     </form>

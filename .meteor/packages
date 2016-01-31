@@ -24,3 +24,4 @@ accounts-password
 iron:router
 mrt:flash-messages
 lbee:moment-helpers
+themeteorchef:jquery-validation

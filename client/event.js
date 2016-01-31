@@ -106,6 +106,9 @@ Template.website_add_form.events({
     }
 });
 
+Template.website_add_form.onRendered(function () {
+    $("#website_add_form").validate();
+});
 
 Template.comment_add_form.events({
     "submit .js-save-comment-form": function (event) {
@@ -125,11 +128,11 @@ Template.comment_add_form.events({
             FlashMessages.sendSuccess("Thank you for your comment!");
         }
 
-        if (!comment) {
-            FlashMessages.sendWarning("You need to provide a comment.");
-        }
-
         return false; // stop the form submit from reloading the page
 
     }
+});
+
+Template.comment_add_form.onRendered(function () {
+    $("#comment_add_form").validate();
 });
