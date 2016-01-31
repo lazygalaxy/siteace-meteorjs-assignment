@@ -73,7 +73,7 @@ Template.website_add_form.events({
         var title = event.target.title.value;
         var description = event.target.description.value;
 
-        if (Meteor.user()) {
+        if (Meteor.user() && url && title && description) {
             Websites.insert({
                 title: title,
                 url: url,
@@ -84,9 +84,11 @@ Template.website_add_form.events({
                 downVotes: [],
                 votes: 0
             });
+
+            $("#website_add_form").modal('hide');
+            FlashMessages.sendSuccess("Website added: " + title);
         }
-        $("#website_add_form").modal('hide');
-        FlashMessages.sendSuccess("Website added: " + title);
+
         return false; // stop the form submit from reloading the page
     }
 });
