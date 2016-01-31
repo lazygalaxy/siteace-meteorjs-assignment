@@ -17,7 +17,10 @@ Template.website.events({
         var website_id = this._id;
         if (Meteor.user()) {
             var user_id = Meteor.user()._id;
-            if (this.upVotes.indexOf(user_id) == -1) {
+            var upVoteIndex = this.upVotes.indexOf(user_id);
+            var downVoteIndex = this.downVotes.indexOf(user_id);
+            if (upVoteIndex == -1) {
+                var newVotes = this.upVotes.length - this.downVotes.length + 1 + (downVoteIndex > -1);
                 Websites.update({
                     _id: website_id
                 }, {
@@ -26,6 +29,9 @@ Template.website.events({
                     },
                     $pull: {
                         downVotes: user_id
+                    },
+                    $set: {
+                        votes: newVotes
                     }
                 });
                 FlashMessages.sendSuccess("Thank you for your vote!");
@@ -41,9 +47,10 @@ Template.website.events({
 
         if (Meteor.user()) {
             var user_id = Meteor.user()._id;
-            if (this.downVotes.indexOf(user_id) == -1) {
-                var user_id = Meteor.user()._id;
-
+            var upVoteIndex = this.upVotes.indexOf(user_id);
+            var downVoteIndex = this.downVotes.indexOf(user_id);
+            if (downVoteIndex == -1) {
+                var newVotes = this.upVotes.length - this.downVotes.length - 1 - (upVoteIndex > -1);
                 Websites.update({
                     _id: website_id
                 }, {
@@ -52,6 +59,9 @@ Template.website.events({
                     },
                     $pull: {
                         upVotes: user_id
+                    },
+                    $set: {
+                        votes: newVotes
                     }
                 });
                 FlashMessages.sendSuccess("Thank you for your vote!");

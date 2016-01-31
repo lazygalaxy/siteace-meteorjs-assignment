@@ -45,26 +45,6 @@ Template.websites.helpers({
 });
 
 Template.website.helpers({
-    votesCounter: function (website_id) {
-        var website = Websites.findOne({
-            _id: website_id
-        });
-
-        if (website) {
-            var newVotes = website.upVotes.length - website.downVotes.length;
-
-            //Websites.update({
-            //    _id: website_id
-            //}, {
-            //    $set: {
-            //        votes: newVotes
-            //    }
-            //});
-
-            return newVotes;
-        }
-        return "unknown";
-    },
     comments: function (website_id) {
         return Comments.find({
             website_id: website_id
